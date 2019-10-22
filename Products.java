@@ -8,17 +8,67 @@ public class Products {
 	private Connection connection;
 	private Statement statement;
 	private ResultSet resultset;
-	private String name;
-    private int price;
+	private String Name;
+    private int Price;
     private String Manufacturer;
     private int Year;
-    public static int Id=1;
+    public static int Id=1;//Designed for testing
     
     public Products() {
     	connectionDB();
+    }//If I create new product, information give from DB
+    
+    public Products(String name, int price, String manufacturer, int year) {
+        this.Name = name;
+        this.Price = price;
+        Manufacturer = manufacturer;
+        Year = year;
     }
-    public void connectionDB () {
 
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        this.Name = name;
+    }
+
+    public int getPrice() {
+        return Price;
+    }
+
+    public void setPrice(int price) {
+        this.Price = price;
+    }
+
+    public String getManufacturer() {
+        return Manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.Manufacturer = manufacturer;
+    }
+
+    public int getYear() {
+        return Year;
+    }
+
+    public void setYear(int year) {
+        this.Year = year;
+    }
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int Id) {
+        this.Id = Id;
+    }
+    
+    public void infoProducts() {
+    	System.out.println("Імя товару: "+getName()+" Ціна: "+getPrice()+" Фірма: "+getManufacturer()+" Рік: "+getYear()+" Створили обєкт № "+(getId()-1));
+    }
+    
+    public void connectionDB () {
     	connection = null;
 		statement = null;
 		resultset = null;
@@ -64,63 +114,25 @@ public class Products {
 		}
 		System.out.println("Вибрали з бд дані про товар");
     	
-    }
+    }//Method connected from DB and select from table information by id
+    
     public void setFromDb(ResultSet resultset) throws SQLException {
 		while (resultset.next()) {
-			this.name = resultset.getString("name");
-			this.price = resultset.getInt("price");
+			this.Name = resultset.getString("name");
+			this.Price = resultset.getInt("price");
 			this.Manufacturer = resultset.getString("manufacturer");
 			this.Year = resultset.getInt("year");
 			this.Id++;
 		}
-	}
-    public Products(String name, int price, String manufacturer, int year) {
-        this.name = name;
-        this.price = price;
-        Manufacturer = manufacturer;
-        Year = year;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public String getManufacturer() {
-        return Manufacturer;
-    }
-
-    public void setManufacturer(String manufacturer) {
-        this.Manufacturer = manufacturer;
-    }
-
-    public int getYear() {
-        return Year;
-    }
-
-    public void setYear(int year) {
-        this.Year = year;
-    }
-    public int getId() {
-        return Id;
-    }
-
-    public void setId(int Id) {
-        this.Id = Id;
-    }
-    public void infoProducts() {
-    	System.out.println("Імя товару: "+getName()+" Ціна: "+getPrice()+" Фірма: "+getManufacturer()+" Рік: "+getYear()+" Створили обєкт № "+(getId()-1));
-        
-    }
+	}//Write information from DB in object 
+    
+    public double GetDiscountPrice (Users user) {
+    	if (user.getSpend() < 3000){
+            return Price;
+        }
+        if (user.getSpend() < 10000){
+            return Price*0.9;
+        }
+        return Price*0.8;
+    }//If person spend a certain amount of accrued discount
 }

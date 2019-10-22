@@ -3,6 +3,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
+
 public class Program {
 	private Connection connection;
 	private Statement statement;
@@ -33,27 +35,21 @@ public class Program {
 			+ "VALUE ('s9',7600,'Apple',2019,8,8,128);";
 	private static String query = "SELECT * FROM hardwarestore.products where id='1';";
 	
-        private int price;
-        private String Manufacturer;
-        private int Year;
+
 	public static void main(String[] args) {
-		Program program = new Program(); 
+		//			Test DB
+		/*Program program = new Program(); 
 		program.CreatingConnection();
 		program.creatingDataBase();
 		program.creatingTable();
-		//program.creatingProduct(addInTablePhone1);
-		//program.creatingProduct(addInTablePhone2);
+		program.creatingProduct(addInTablePhone1);
+		program.creatingProduct(addInTablePhone2);*/
 		
-		Users users = new Users("Bob","Men",1,"test1@gmail.com","En",10000,100);
-        Users users1 = new Users("Jane","Women",1,"test2@gmail.com","Ua",15000,150);
-        Users users2 = new Users("Colin","Men",1,"test2@gmail.com","Ua",25000,50);
-        /*Products products = new Televised("S43",15300,"Samsung",2017,43);
-        Products products1 = new Televised("S32",12000,"Samsung",2012,32);
-        Products products2 = new Phone("s8",3300,"Apple",2017,6,4,64);
-        Products products3 = new Phone("s9",7600,"Apple",2019,8,8,128);
-        users.infoUsers();
-        users1.infoUsers();
-        users2.infoUsers();*/
+		
+		Users user = new Users("Volodya","Men",1,"test1@gmail.com","En",50000,0);
+        Users user1 = new Users("Olya","Women",1,"test2@gmail.com","Ua",150000,150);
+        Users user2 = new Users("Colin","Men",1,"test2@gmail.com","Ua",25000,50);
+        
         Products products1 = new Televised();
         products1.infoProducts();
         Products products2 = new Televised();
@@ -67,10 +63,42 @@ public class Program {
         Products products6 = new Phone();
         products6.infoProducts();
         
+        Products [] products = new Products[6];
+        products[0] = products1;
+        products[1] = products2;
+        products[2] = products3;
+        products[3] = products4;
+        products[4] = products5;
+        products[5] = products6;
+        
+        Informer informer = new Informer();
+        
+        while (true) {
+        	System.out.println("Добрий день: "+user.getName()+" Ваш баланс: "+user.getBalance()+
+        			" Ви потратили: "+user.getSpend()+"\nЯкщо ви потратили до 3000 ви платите повну ціну. "+
+        			"Якщо до 10000 то 90%, Якщо більше то 80%");
+        	for (int i = 0; i < products.length;i++) {
+        		System.out.println("Товар: "+i+" "+products[i].getName()+" За ціною: "+products[i].getPrice());
+        	}
+        	System.out.println("Виберіть товар і натисніть ентер ");
+        	int productNumber = inputNumber();
+        	if (productNumber >=0 && productNumber < products.length) { 
+        		if (products[productNumber].getPrice() < user.getBalance()) {
+        			informer.Buy(user, products[productNumber]);
+        		}
+        		else {
+        			System.out.println("У вас не достатньо коштів");
+        		}
+        	}
+        	else {
+        		System.out.println("Такого товару не існує");
+        	}
+        	
+        }
         
 	}
 	
-	public void CreatingConnection() {//Перевірка підключення з базою даних
+	public void CreatingConnection() {
 		String url = "jdbc:mysql://localhost:3306/boockstore?characterEncoding=utf8&serverTimezone=UTC";
 		String user = "root";
 		String password = "512891";
@@ -84,8 +112,9 @@ public class Program {
 		catch(SQLException e) {
 			e.printStackTrace();
 		}
-	}
-	public void OpenConnection() {//Підключення до бази даних в методі і при необхідності викликаю його
+	}//Перевірка підключення з базою даних
+	
+	public void OpenConnection() {
 		String url = "jdbc:mysql://localhost:3306/hardwarestore?characterEncoding=utf8&serverTimezone=UTC";
 		String user = "root";
 		String password = "512891";
@@ -96,8 +125,9 @@ public class Program {
 		catch(SQLException e) {
 			e.printStackTrace();
 		}
-	}
-	public void creatingDataBase() {//Метод для створення бази даних
+	}//Підключення до бази даних в методі і при необхідності викликаю його
+	
+	public void creatingDataBase() {
 		connection = null;
 		statement = null;
 		try {
@@ -126,8 +156,9 @@ public class Program {
 			}
 		}
 		System.out.println("Створили базу даних");
-	}
-	public void creatingTable() {//Метод для створення таблиці
+	}//Метод для створення бази даних
+	
+	public void creatingTable() {
 		connection = null;
 		statement = null;
 		try {
@@ -156,8 +187,9 @@ public class Program {
 			}
 		}
 		System.out.println("Створили таблицю");
-	}
-	public void creatingProduct(String add) {//Метод для додавання в таблицю товарів
+	}//Метод для створення таблиці
+	
+	public void creatingProduct(String add) {
 		connection = null;
 		statement = null;
 		try {
@@ -187,7 +219,12 @@ public class Program {
 			}
 		}
 		System.out.println("Записали в таблицю дані");
-	}
+	}//Метод для додавання в таблицю товарів
 	
+	public static int inputNumber(){
+        Scanner scanner = new Scanner(System.in);
+        int result = scanner.nextInt();
+        return result;
+    }
 	
 }

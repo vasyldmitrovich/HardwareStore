@@ -22,12 +22,7 @@ public class Users {
         Balance = balance;
         Spend = spend;
     }
-    public void infoUsers(){
-        System.out.println("Name= "+Name+" Gender= "+Gender+" Pass= "+Pass+" Mail= "+Mail
-                +" MemberID="+MemberID+" Address="+Address+" Balance= "+Balance+" Spend= "+Spend);
-
-    }
-
+    
     public String getName() {
         return Name;
     }
@@ -91,4 +86,14 @@ public class Users {
     public void setSpend(double spend) {
         Spend = spend;
     }
+    
+    public void infoUsers(){
+        System.out.println("Name= "+Name+" Gender= "+Gender+" Pass= "+Pass+" Mail= "+Mail
+                +" MemberID="+MemberID+" Address="+Address+" Balance= "+Balance+" Spend= "+Spend);
+    }//Information about user
+    
+    public void ReduceBalance (double price) {
+    	this.Balance -= price;
+    	this.Spend += price;
+    }//When buy product: Balance minus price and Spend plus 
 }
